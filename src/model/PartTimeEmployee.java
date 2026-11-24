@@ -25,7 +25,7 @@ public class PartTimeEmployee extends Employee {
 
     @Override
     public Map<String, String> getTypeFields() {
-        return Map.of(FieldKeys.HOURLY_RATE , String.valueOf(hourlyRate) , FieldKeys.HOURS_WORKED , String> );
+        return Map.of(FieldKeys.HOURLY_RATE , String.valueOf(hourlyRate) , FieldKeys.HOURS_WORKED , String.valueOf(hoursWorked) );
     }
 
     public double getHourlyRate() {
