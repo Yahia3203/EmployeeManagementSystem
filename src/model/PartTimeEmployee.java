@@ -1,21 +1,22 @@
 package model;
 
 import java.util.Map;
+import exception.*;
 
 public class PartTimeEmployee extends Employee {
     private double hourlyRate;
-    private int hoursWorked;
+    private double hoursWorked;
 
-    public PartTimeEmployee(int id, String fullName, int age, Department department, String position , double hourlyRate , int hoursWorked) {
+    public PartTimeEmployee(int id, String fullName, int age, Department department,
+                            String position, double hourlyRate, double hoursWorked) {
         super(id, fullName, age, department, position);
-        this.hourlyRate = hourlyRate;
-        this.hoursWorked = hoursWorked;
-
+        setHourlyRate(hourlyRate);
+        setHoursWorked(hoursWorked);
     }
 
     @Override
     public double calculateSalary() {
-        return hoursWorked * hourlyRate;
+        return hourlyRate * hoursWorked;
     }
 
     @Override
@@ -25,22 +26,24 @@ public class PartTimeEmployee extends Employee {
 
     @Override
     public Map<String, String> getTypeFields() {
-        return Map.of(FieldKeys.HOURLY_RATE , String.valueOf(hourlyRate) , FieldKeys.HOURS_WORKED , String.valueOf(hoursWorked) );
+        return Map.of(
+                FieldKeys.HOURLY_RATE, String.valueOf(hourlyRate),
+                FieldKeys.HOURS_WORKED, String.valueOf(hoursWorked));
     }
 
     public double getHourlyRate() {
         return hourlyRate;
     }
 
-    public void setHourlyRate(double hourlyRate) {
-        this.hourlyRate = hourlyRate;
+    public final void setHourlyRate(double hourlyRate) {
+        this.hourlyRate = Guard.requireNonNegative(hourlyRate, "Hourly rate");
     }
 
-    public int getHoursWorked() {
+    public double getHoursWorked() {
         return hoursWorked;
     }
 
-    public void setHoursWorked(int hoursWorked) {
-        this.hoursWorked = hoursWorked;
+    public final void setHoursWorked(double hoursWorked) {
+        this.hoursWorked = Guard.requireNonNegative(hoursWorked, "Hours worked");
     }
 }
