@@ -1,6 +1,6 @@
 package model;
 
-import exception.Guard; 
+import exception.Guard;
 
 public class Department {
     private int id;
