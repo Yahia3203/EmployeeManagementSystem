@@ -24,7 +24,7 @@ public class Department {
         return name;
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         Guard.requireNotBlank(name , "Department Name");
         this.name = name;
     }
