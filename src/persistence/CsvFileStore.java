@@ -9,13 +9,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class CsvFileStore {
 
-    private static final char SOF = '\uFEFF';
+    private static final char BOM = '\uFEFF';
     private static final String TEMP_SUFFIX = ".tmp";
     private final Path path;
     private final String[] header;
@@ -51,14 +50,18 @@ public class CsvFileStore {
             throw new PersistenceException("'" + path + "' is not valid CSV, " + e.getMessage(), e);
         }
 
-        if (header.length > 0 && !records.isEmpty() && Arrays.equals(records.get(0), header)) {
+        if (header.length > 0 && !records.isEmpty() && isHeader(records.get(0))) {
             records.remove(0);
         }
         return records;
     }
 
+    private boolean isHeader(String[] first) {
+        return first.length > 0 && first[0].trim().equalsIgnoreCase(header[0]);
+    }
+
     static List<String[]> parse(String text) {
-        if (!text.isEmpty() && text.charAt(0) == SOF) {
+        if (!text.isEmpty() && text.charAt(0) == BOM) {
             text = text.substring(1);
         }
 
@@ -72,7 +75,7 @@ public class CsvFileStore {
 
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
-            if (c == '\n') {
+            if (c == '\n' || (c == '\r' && !(i + 1 < text.length() && text.charAt(i + 1) == '\n'))) {
                 line++;
             }
 
@@ -99,9 +102,9 @@ public class CsvFileStore {
                 field.setLength(0);
                 quoted = false;
                 closed = false;
-            } else if (c == '\r') {
-                // part of a CRLF line ending (Windows); the '\n' that follows ends the record
-            } else if (c == '\n') {
+            } else if (c == '\r' && i + 1 < text.length() && text.charAt(i + 1) == '\n') {
+                // first half of a CRLF line ending; the '\n' that follows ends the record
+            } else if (c == '\n' || c == '\r') {   // a lone '\r' is an old-Mac line ending
                 boolean blankLine = fields.isEmpty() && field.length() == 0 && !quoted;
                 if (!blankLine) {
                     fields.add(field.toString());

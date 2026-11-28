@@ -1,9 +1,7 @@
 package validation;
 
-import exception.Guard;
 import model.EmployeeData;
 import model.EmployeeType;
-import model.FieldKeys;
 
 public interface EmployeeValidator {
 

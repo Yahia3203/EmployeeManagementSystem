@@ -1,5 +1,7 @@
 package persistence;
 
+import exception.EmsException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -55,7 +57,7 @@ public abstract class AbstractCsvRepository<T> implements Repository<T, Integer>
         Objects.requireNonNull(entity, "entity");
         int id = idOf.applyAsInt(entity);
         if (entities.containsKey(id)) {
-            throw new IllegalArgumentException(entityName + " ID " + id + " already exists");
+            throw new EmsException(entityName + " ID " + id + " already exists");
         }
         Map<Integer, T> next = new LinkedHashMap<>(entities);
         next.put(id, entity);
@@ -67,7 +69,7 @@ public abstract class AbstractCsvRepository<T> implements Repository<T, Integer>
         Objects.requireNonNull(entity, "entity");
         int id = idOf.applyAsInt(entity);
         if (!entities.containsKey(id)) {
-            throw new IllegalArgumentException(entityName + " ID " + id + " does not exist");
+            throw new EmsException(entityName + " ID " + id + " does not exist");
         }
         Map<Integer, T> next = new LinkedHashMap<>(entities);
         next.put(id, entity);
@@ -77,7 +79,7 @@ public abstract class AbstractCsvRepository<T> implements Repository<T, Integer>
     @Override
     public void deleteById(Integer id) {
         if (!entities.containsKey(id)) {
-            throw new IllegalArgumentException(entityName + " ID " + id + " does not exist");
+            throw new EmsException(entityName + " ID " + id + " does not exist");
         }
         Map<Integer, T> next = new LinkedHashMap<>(entities);
         next.remove(id);

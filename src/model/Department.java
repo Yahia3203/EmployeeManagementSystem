@@ -1,6 +1,6 @@
 package model;
 
-import exception.Guard;
+import validation.Guard;
 
 public class Department {
     private int id;
@@ -16,16 +16,29 @@ public class Department {
     }
 
     private void setId(int id) {
-        Guard.requirePositive(id , "Department ID");
-        this.id = id;
+        this.id = Guard.requirePositive(id, "Department ID");
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        Guard.requireNotBlank(name , "Department Name");
-        this.name = name;
+    public final void setName(String name) {
+        this.name = Guard.requireNotBlank(name, "Department Name");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return this == o || (o instanceof Department d && id == d.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

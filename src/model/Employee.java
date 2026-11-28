@@ -1,7 +1,9 @@
 package model;
 
+import validation.Guard;
+
+import java.math.BigDecimal;
 import java.util.Map;
-import exception.*;
 
 public abstract class Employee {
     private final int id;
@@ -35,7 +37,7 @@ public abstract class Employee {
     }
 
     public final void setAge(int age) {
-        this.age = Guard.requirePositive(age, "Age");
+        this.age = Guard.requireAge(age, "Age");
     }
 
     public Department getDepartment() {
@@ -54,6 +56,11 @@ public abstract class Employee {
         this.position = Guard.requireNotBlank(position, "Position");
     }
 
+    /** Formats a number without exponent notation (10000000, not 1.0E7). */
+    protected static String plain(double value) {
+        return BigDecimal.valueOf(value).toPlainString();
+    }
+
     public abstract double calculateSalary();
 
     public abstract EmployeeType getType();
@@ -63,6 +70,11 @@ public abstract class Employee {
     @Override
     public boolean equals(Object o) {
         return this == o || (o instanceof Employee e && id == e.id);
+    }
+
+    @Override
+    public String toString() {
+        return fullName + " (#" + id + ", " + getType() + ")";
     }
 
     @Override

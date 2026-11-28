@@ -1,7 +1,7 @@
 package service;
 
 import exception.EmsException;
-import exception.Guard;
+import validation.Guard;
 import factory.EmployeeFactory;
 import model.Department;
 import model.Employee;
@@ -10,6 +10,7 @@ import persistence.EmployeeRepository;
 import validation.EmployeeValidator;
 
 import java.util.List;
+import java.util.Objects;
 
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -22,10 +23,10 @@ public class EmployeeServiceImpl implements EmployeeService {
                                DepartmentService departmentService,
                                EmployeeFactory factory,
                                List<EmployeeValidator> validators) {
-        this.employeeRepo = employeeRepo;
-        this.departmentService = departmentService;
-        this.factory = factory;
-        this.validators = List.copyOf(validators);
+        this.employeeRepo = Objects.requireNonNull(employeeRepo, "employeeRepo");
+        this.departmentService = Objects.requireNonNull(departmentService, "departmentService");
+        this.factory = Objects.requireNonNull(factory, "factory");
+        this.validators = List.copyOf(Objects.requireNonNull(validators, "validators"));
     }
 
     @Override

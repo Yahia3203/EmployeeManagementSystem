@@ -1,6 +1,6 @@
 package factory;
 
-import exception.Guard;
+import validation.Guard;
 import model.Department;
 import model.Employee;
 import model.EmployeeData;
@@ -57,7 +57,7 @@ public class RegistryEmployeeFactory implements EmployeeFactory {
         CommonFields common = new CommonFields(
                 Guard.parsePositiveInt(data.id(), "Employee ID"),
                 data.fullName(),
-                Guard.parsePositiveInt(data.age(), "Age"),
+                Guard.requireAge(Guard.parseInt(data.age(), "Age"), "Age"),
                 department,
                 data.position());
 

@@ -1,7 +1,8 @@
 package model;
 
+import validation.Guard;
+
 import java.util.Map;
-import exception.*;
 
 public class FullTimeEmployee extends Employee {
     private double basicSalary;
@@ -27,8 +28,8 @@ public class FullTimeEmployee extends Employee {
     @Override
     public Map<String, String> getTypeFields() {
         return Map.of(
-                FieldKeys.BASIC_SALARY, String.valueOf(basicSalary),
-                FieldKeys.BONUS, String.valueOf(bonus));
+                FieldKeys.BASIC_SALARY, plain(basicSalary),
+                FieldKeys.BONUS, plain(bonus));
     }
 
     public double getBasicSalary() {

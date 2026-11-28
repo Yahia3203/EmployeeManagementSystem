@@ -1,6 +1,6 @@
 package factory;
 
-import exception.Guard;
+import validation.Guard;
 import model.Employee;
 import model.EmployeeType;
 import model.FieldKeys;

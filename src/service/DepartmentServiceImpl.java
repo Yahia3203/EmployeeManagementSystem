@@ -1,12 +1,13 @@
 package service;
 
 import exception.EmsException;
-import exception.Guard;
+import validation.Guard;
 import model.Department;
 import persistence.DepartmentRepository;
 import persistence.EmployeeRepository;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DepartmentServiceImpl implements DepartmentService {
 
@@ -14,8 +15,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     private final EmployeeRepository employeeRepo;
 
     public DepartmentServiceImpl(DepartmentRepository deptRepo , EmployeeRepository employeeRepo) {
-        this.deptRepo = deptRepo;
-        this.employeeRepo = employeeRepo;
+        this.deptRepo = Objects.requireNonNull(deptRepo, "deptRepo");
+        this.employeeRepo = Objects.requireNonNull(employeeRepo, "employeeRepo");
     }
 
     @Override

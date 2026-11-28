@@ -1,4 +1,6 @@
-package exception;
+package validation;
+
+import exception.ValidationException;
 
 import java.util.regex.Pattern;
 

@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public record EmployeeData(
@@ -12,6 +14,12 @@ public record EmployeeData(
         Map<String, String> typeFields) {
 
     public EmployeeData {
-        typeFields = (typeFields == null) ? Map.of() : Map.copyOf(typeFields);
+        Map<String, String> copy = new LinkedHashMap<>();
+        if (typeFields != null) {
+            typeFields.forEach((k, v) -> {
+                if (k != null && v != null) copy.put(k, v);   // a null value means "not provided"
+            });
+        }
+        typeFields = Collections.unmodifiableMap(copy);
     }
 }
